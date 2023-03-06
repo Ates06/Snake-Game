@@ -28,7 +28,7 @@ const changeDirection = (e) => {
 
 const initGAME = () => {
     let htmlMarkup = `<div class="food"  style="grid-area: ${foodY} / ${foodX}"></div>`;
-    
+    playBoard.innerHTML = htmlMarkup;
 
     if(snakeX === foodX && snakeY === foodY) {
         changeFoodPosition();
@@ -36,19 +36,25 @@ const initGAME = () => {
         console.log(snakeBody);
     }
 
+    for (let i = snakeBody.length - 1; i < 0; i--) {
+        snakeBody[i] = snakeBody[i - 1];
+    }
+
+    snakeBody[0] = [snakeX, snakeY];
 
     snakeX += velocityX;
     snakeY += velocityY;
 
+    if(snakeX <= 0 || snakeX > 30 || snakeY <= 0 || snakeY > 30){
+        console.log('game over');
+    }
 
-    for (let index = 0; index < snakeBody.length; index++) {
+    for (let i = 0; i < snakeBody.length; i++) {
         htmlMarkup += `<div class="head"  style="grid-area: ${snakeBody[i][1]} / ${snakeBody[i][0]}"></div>`;
         
     }
-    
-    playBoard.innerHTML = htmlMarkup;
-}
 
+}
+setInterval(initGAME(),125)
 changeFoodPosition();
-setInterval(initGAME, 125);
 document.addEventListener("keydown", changeDirection);
